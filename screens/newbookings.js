@@ -59,6 +59,7 @@ const Newbookings = props => {
         <View>
             <Button color="purple" onPress={locationHandler}>locate me</Button>
             <Button onPress={() => routingHandler(7.294544,80.5907618)}>Kandy</Button>
+            <Button onPress={() => routingHandler(6.0558904,80.1769774)}>Galle</Button>
         </View>
     )
 }
