@@ -2,10 +2,12 @@ import { createAppContainer} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Dashboard from '../screens/dashboard';
 import Newbookings from '../screens/newbookings';
+import MapScreenview from '../screens/MapScreenView';
 
 const Deliverynav = createStackNavigator({
     Dashboard: Dashboard,
-    Newbookings: Newbookings
+    Newbookings: Newbookings,
+    Mapview: MapScreenview
 }, {
     defaultNavigationOptions : {
         headerStyle: {
