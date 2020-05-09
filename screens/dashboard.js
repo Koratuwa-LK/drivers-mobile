@@ -10,12 +10,24 @@ const Dashboard = props => {
 
 
     return (
-        <ImageBackground source={{uri: 'https://www.vtexperts.com/wp-content/uploads/2016/07/google-map-background-1900x1170.png'}} style={styles.imgbg}>
+        // <ImageBackground source={{uri: 'https://www.vtexperts.com/wp-content/uploads/2016/07/google-map-background-1900x1170.png'}} style={styles.imgbg}>
+        
+        // <ImageBackground source={{uri: 'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'}} style={styles.imgbg}>
+
+        
+<ImageBackground source={{uri: 'https://images.unsplash.com/photo-1555498386-50deae36950a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80'}} style={styles.imgbg}>
+        
         <View style={styles.main}>
             <View style={styles.btns}>
-            <Button >previous trips</Button>
-            <Button onPress={newbookingHandler}>new bookings</Button>
-            <Button >help</Button>
+            <View style={styles.btn}>
+            <Button color="#7bf037" >previous trips</Button>
+            </View>
+            <View style={styles.btn}>
+            <Button color="#7bf037" onPress={newbookingHandler}>new bookings</Button>
+            </View>
+            <View style={styles.btn}>
+            <Button color="#7bf037">help</Button>
+            </View>
             </View>
         </View>
         </ImageBackground>
@@ -38,6 +50,14 @@ const styles = StyleSheet.create({
     },
     imgbg: {
         flex: 1
+    },
+    btn: {
+        marginTop: 3,
+        width: 160,
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderRadius: 10
+
     }
 })
 

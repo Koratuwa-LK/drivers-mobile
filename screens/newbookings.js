@@ -1,5 +1,5 @@
 import React, { Component,  useState } from 'react'
-import {View, Text, Alert} from 'react-native';
+import {View, Text, Alert, ImageBackground, StyleSheet} from 'react-native';
 import {Button} from 'react-native-paper';
 
 import * as Maplocation from 'expo-location';
@@ -56,12 +56,44 @@ const Newbookings = props => {
 
 
     return (
-        <View>
+        <ImageBackground style={styles.imgbg} source={{uri: 'https://images.unsplash.com/photo-1477951233099-d2c5fbd878ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80'}}>
+        <View style={styles.main}>
+            <View style={styles.locate}>
             <Button color="purple" onPress={locationHandler}>locate me</Button>
+            </View>
+            <View style={styles.btn} >
             <Button onPress={() => routingHandler(7.294544,80.5907618)}>Kandy</Button>
+            </View>
+            <View style={styles.btn}>
             <Button onPress={() => routingHandler(6.0558904,80.1769774)}>Galle</Button>
+            </View>
         </View>
+        </ImageBackground>
     )
 }
+
+const styles = StyleSheet.create({
+    imgbg: {
+        flex: 1
+    },
+    btn: {
+        marginTop: 3,
+        width: 160,
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderRadius: 10
+
+    },
+    main: {
+        justifyContent: 'center',
+        textAlign: 'center',
+        alignItems: 'center',
+        marginTop: '40%',
+        position: 'absolute',
+        marginLeft: '30%',
+        marginRight: '30%'
+        
+    },
+})
 
 export default Newbookings
