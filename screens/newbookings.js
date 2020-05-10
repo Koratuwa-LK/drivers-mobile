@@ -1,6 +1,6 @@
 import React, { Component,  useState } from 'react'
 import {View, Text, Alert, ImageBackground, StyleSheet} from 'react-native';
-import {Button} from 'react-native-paper';
+import {Button, Card, Title, Paragraph} from 'react-native-paper';
 
 import * as Maplocation from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -68,6 +68,8 @@ const Newbookings = props => {
             <Button onPress={() => routingHandler(6.0558904,80.1769774)}>Galle</Button>
             </View>
         </View>
+
+        
         </ImageBackground>
     )
 }

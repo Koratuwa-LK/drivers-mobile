@@ -4,6 +4,7 @@ import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import * as Maplocation from 'expo-location';
 import env from '../vars/env';
+import { IconButton } from 'react-native-paper';
 
 const MapScreenview = (props) => {
 
@@ -221,7 +222,20 @@ const MapScreenview = (props) => {
 
     return (
         <View style={styles.map}>
-            
+        {/* <View style={styles.toggle}>
+            <View style={styles.moon}>
+            <IconButton
+            icon="weather-night"
+            size={19}
+            ></IconButton>
+            </View>
+            <View style={styles.sun}>
+            <IconButton 
+            icon="white-balance-sunny"
+            size={19}
+            ></IconButton>
+            </View>
+            </View> */}
             <MapView
             showsUserLocation={true}
             style={styles.map}
@@ -253,6 +267,13 @@ const MapScreenview = (props) => {
 const styles = StyleSheet.create({
     map: {
         flex: 1
+    },
+    toggle: {
+        flexDirection: 'row',
+
+    },
+    sun: {
+        marginLeft: '80%'
     }
 })
 
