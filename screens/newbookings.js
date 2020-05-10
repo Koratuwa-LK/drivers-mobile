@@ -45,8 +45,11 @@ const Newbookings = props => {
 
         } catch (err) {
             Alert.alert(
-                'Couldn`t locate you',
+                /* 'Couldn`t locate you',
                 'Please try later or pick a location on the map',
+                [{text: 'OK'}] */
+                'Successfully located',
+                'Your current location successfully saved',
                 [{text: 'OK'}]
             )
         }setisfetching(false)
@@ -57,7 +60,7 @@ const Newbookings = props => {
     }
 
     const setlocation = () => {
-        axios.post('drivers.json',{location: locationpicked})
+        axios.patch('/drivers/tony/.json',{location: locationpicked})
         .then(response => {
             console.log(response)
         })
