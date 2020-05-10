@@ -5,6 +5,8 @@ import {Button, Card, Title, Paragraph} from 'react-native-paper';
 import * as Maplocation from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
+import axios from '../axios-onlinelist';
+
 const Newbookings = props => {
     
     const [locationpicked, setlocationpicked] = useState()
@@ -54,12 +56,25 @@ const Newbookings = props => {
         props.navigation.navigate('Mapview', {lat: lat, lng: lng})
     }
 
+    const setlocation = () => {
+        axios.post('drivers.json',{location: locationpicked})
+        .then(response => {
+            console.log(response)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
 
     return (
         <ImageBackground style={styles.imgbg} source={{uri: 'https://images.unsplash.com/photo-1477951233099-d2c5fbd878ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80'}}>
         <View style={styles.main}>
             <View style={styles.locate}>
             <Button color="purple" onPress={locationHandler}>locate me</Button>
+            </View>
+            <View style={styles.locate}>
+            <Button color="blue" onPress={setlocation}>set location</Button>
             </View>
             <View style={styles.btn} >
             <Button onPress={() => routingHandler(7.294544,80.5907618)}>Kandy</Button>
