@@ -1,13 +1,33 @@
-import React, { Component } from 'react'
-import {View, Text, StyleSheet, ImageBackground} from 'react-native';
+import React, { Component, useState } from 'react'
+import {View, Text, StyleSheet, ImageBackground, Alert} from 'react-native';
 import {Button} from 'react-native-paper';
 import axios from '../axios-onlinelist';
 
 const Dashboard = props => {
 
+    const[isonline, setisonline] = useState(true)
+    const[setisoffline, isoffline] = useState()
+    
+
+
     const newbookingHandler = () => {
+        if(isonline) {
         props.navigation.navigate('Newbookings')
+        } else {
+            Alert.alert(
+                /* 'Couldn`t locate you',
+                'Please try later or pick a location on the map',
+                [{text: 'OK'}] */
+                'Must be Online',
+                'You must go online before checking new bookings',
+                [{text: 'OK'}]
+            )
+        }
     }
+
+    
+
+
 
     /* const setonline = () => {
         axios.post('/drivers/tony/.json', {name: 'tony', status: 'Online'})
@@ -19,12 +39,16 @@ const Dashboard = props => {
     } */
 
     const setonline = () => {
+        setisonline(true)
         axios.patch('/drivers/tony/.json', {name: 'tony',status: 'Online'})
         .then(response => {
+            
             console.log(response)
         }).catch(err => {
             console.log(err)
-        })
+        })/* ,
+        () => setisonline(true)
+         */
     }
 
 /*     const setoffline = () => {
@@ -35,22 +59,36 @@ const Dashboard = props => {
             console.log(err)
         })
     }
- */
+ */ 
+    const isonlineshow = () => {
+        setisonline(true)
+    }
+
     const setoffline = () => {
+        setisonline(false)
         axios.patch('/drivers/tony/.json', {name: 'tony', status: 'Offline'})
         .then(response => {
+            
             console.log(response)
         }).catch(err => {
             console.log(err)
-        })
+        })/* ,
+        () => setisonline(false) */
     }
 
+    let onlinebtn;
+
+    if(isonline) {
+        onlinebtn = <Button mode="contained" color="#7bf037" onPress={newbookingHandler}>new bookings</Button>
+    } else {
+        onlinebtn = <Button mode="contained" color="#7bf037" disabled onPress={newbookingHandler}>new bookings</Button>
+    }
 
     return (
         // <ImageBackground source={{uri: 'https://www.vtexperts.com/wp-content/uploads/2016/07/google-map-background-1900x1170.png'}} style={styles.imgbg}>
         
         // <ImageBackground source={{uri: 'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'}} style={styles.imgbg}>
-
+        
         
 <ImageBackground source={{uri: 'https://images.unsplash.com/photo-1555498386-50deae36950a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80'}} style={styles.imgbg}>
         
@@ -60,7 +98,8 @@ const Dashboard = props => {
             <Button color="#7bf037" >previous trips</Button>
             </View> */}
             <View style={styles.btn}>
-            <Button mode="contained" color="#7bf037" onPress={newbookingHandler}>new bookings</Button>
+            {/* <Button mode="contained"  color="#7bf037" onPress={newbookingHandler}>new bookings</Button> */}
+            {onlinebtn}
             </View>
 
             <View style={styles.triggers}>
@@ -74,6 +113,9 @@ const Dashboard = props => {
             <View style={styles.btn}>
             <Button mode="contained" color="#7bf037">help</Button>
             </View>
+            </View>
+            <View>
+            <Text>{isonline}</Text>
             </View>
         </View>
         </ImageBackground>

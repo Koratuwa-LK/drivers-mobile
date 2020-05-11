@@ -122,7 +122,7 @@ const Newbookings = props => {
 <FlatList
         data={booking}
         renderItem={({ item }) => {return (
-            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapview', {lat: item.lat, lng: item.lng })}}><View style={styles.tile}><Text>{item.time}</Text></View></TouchableOpacity> 
+            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapview', {lat: item.lat, lng: item.lng })}}><View style={styles.tile}><Text>{item.time}</Text><Text>Farm to Dambulla </Text></View></TouchableOpacity> 
         )}} 
         keyExtractor={item => item.id}
       />
@@ -158,11 +158,12 @@ const styles = StyleSheet.create({
         
     },
     tile: {
-        height: 100,
+        
         borderStyle: 'solid',
         borderWidth: 1,
         padding: 10,
-        borderRadius: 10
+        borderRadius: 10,
+        width: 150
     }
 })
 
