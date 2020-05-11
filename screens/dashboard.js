@@ -84,6 +84,14 @@ const Dashboard = props => {
         onlinebtn = <Button mode="contained" color="#7bf037" disabled onPress={newbookingHandler}>new bookings</Button>
     }
 
+    let showonline;
+
+    if(isonline) {
+        showonline = <View style={styles.online}><Text style={styles.text}>ONLINE</Text></View>
+    }else{
+        showonline = <View style={styles.offline}><Text style={styles.text}>OFFLINE</Text></View>
+    }
+
     return (
         // <ImageBackground source={{uri: 'https://www.vtexperts.com/wp-content/uploads/2016/07/google-map-background-1900x1170.png'}} style={styles.imgbg}>
         
@@ -111,11 +119,11 @@ const Dashboard = props => {
                 </View>
             </View>
             <View style={styles.btn}>
-            <Button mode="contained" color="#7bf037">help</Button>
+            <Button mode="contained" color="grey">help</Button>
             </View>
             </View>
             <View>
-            <Text>{isonline}</Text>
+            {showonline}
             </View>
         </View>
         </ImageBackground>
@@ -158,6 +166,23 @@ const styles = StyleSheet.create({
     },
     btn: {
         marginTop: 10
+    },
+    online: {
+        marginTop: 30,
+        backgroundColor: '#7bf037',
+        borderStyle: 'solid',
+        borderRadius: 3,
+        padding: 10
+    },
+    offline: {
+        marginTop: 30,
+        backgroundColor: 'orange',
+        borderStyle: 'solid',
+        borderRadius: 3,
+        padding: 10
+    },
+    text: {
+        color: 'white'
     }
 })
 
