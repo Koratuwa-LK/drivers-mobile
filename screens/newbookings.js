@@ -1,5 +1,5 @@
 import React, { Component,  useState } from 'react'
-import {View, Text, Alert, ImageBackground, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import {View, Text, Alert, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import {Button, Card, Title, Paragraph} from 'react-native-paper';
 
 import * as Maplocation from 'expo-location';
@@ -74,7 +74,7 @@ const Newbookings = props => {
     }
 
 
-    const driversHandler = () => {
+    /* const driversHandler = () => {
         axios.get('/drivers.json')
         .then((response) => {
        
@@ -99,12 +99,46 @@ const Newbookings = props => {
         .catch(err => {
             console.log(err)
         })
+    } */
+
+
+    const driversHandler = () => {
+        axios.get('/farmerbookings.json')
+        .then((response) => {
+       
+            const hotel = []
+            const obj = response.data
+            for(let key in obj) {
+               if(obj[key].drivername == 'tony') {
+              hotel.push({
+                  id: key,
+                  
+                  lat: obj[key].lat,
+                  lng: obj[key].lng,
+                  time: obj[key].time,
+                  farmername: obj[key].farmername,
+                  farmernumber: obj[key].farmernumer
+              })
+            }
+        }
+
+            setbooking(hotel)
+            console.log(hotel)
+
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
+
+
 
 
     return (
         <ImageBackground style={styles.imgbg} source={{uri: 'https://images.unsplash.com/photo-1477951233099-d2c5fbd878ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80'}}>
+    
         <View style={styles.main}>
+        {/* <ScrollView style={styles.view}> */}
             <View style={styles.locate}>
             <Button color="purple" onPress={locationHandler}>locate me</Button>
             </View>
@@ -127,7 +161,7 @@ const Newbookings = props => {
         keyExtractor={item => item.id}
       />
 
-
+{/* </ScrollView> */}
         </View>
 
         
@@ -151,7 +185,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         alignItems: 'center',
-        marginTop: '40%',
+        marginTop: '15%',
+       
         position: 'absolute',
         marginLeft: '30%',
         marginRight: '30%'
@@ -163,7 +198,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         borderRadius: 10,
-        width: 150
+        width: 150,
+        backgroundColor: 'rgba(245, 227, 34, 0.5)'
+    },
+    view: {
+        marginBottom: 100
     }
 })
 

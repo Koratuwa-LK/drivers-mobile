@@ -4,7 +4,7 @@ import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import * as Maplocation from 'expo-location';
 import env from '../vars/env';
-import { IconButton } from 'react-native-paper';
+import { IconButton, Button } from 'react-native-paper';
 
 const MapScreenview = (props) => {
 
@@ -259,6 +259,14 @@ const MapScreenview = (props) => {
                  
                        
             </MapView>
+            <View style={styles.btns}>
+            <View style={styles.btn}>
+              <Button mode="contained" color="#7bf037">confirm</Button>
+              </View>
+              <View style={styles.btn}>
+              <Button mode="contained" color="#ed1b11">decline</Button>
+              </View>
+            </View>
             </View>
         
     )
@@ -274,6 +282,13 @@ const styles = StyleSheet.create({
     },
     sun: {
         marginLeft: '80%'
+    },
+    btns: {
+      flexDirection: 'row',
+      
+    },
+    btn: {
+      width: '50%'
     }
 })
 
