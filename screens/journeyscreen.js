@@ -5,13 +5,13 @@ export default class Journeyscreen extends Component {
  
   handleGetDirections = () => {
     const data = {
-       source: {
+       /* source: {
         latitude: 6.7572025,
         longitude: 79.907201
-      },
+      }, */
       destination: {
-        latitude: 6.0558904,
-        longitude: 80.1769774
+        latitude: /* 6.0558904 */ this.props.navigation.getParam('lat'),
+        longitude: /* 80.1769774 */ this.props.navigation.getParam('lng')
       },
       params: [
         {
