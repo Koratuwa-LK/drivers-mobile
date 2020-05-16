@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react'
-import {View, Text, StyleSheet, ImageBackground, Alert} from 'react-native';
+import {View, Text, StyleSheet, ImageBackground, Alert,TouchableOpacity, Image} from 'react-native';
 import {Button} from 'react-native-paper';
 import axios from '../axios-onlinelist';
 
@@ -23,6 +23,10 @@ const Dashboard = props => {
                 [{text: 'OK'}]
             )
         }
+    }
+
+    const confirmedHandler = () => {
+        props.navigation.navigate('Confirmed')
     }
 
     
@@ -76,12 +80,31 @@ const Dashboard = props => {
         () => setisonline(false) */
     }
 
+    let vectors;
+
+    if(isonline) {
+        vectors = <View style={{alignItems: 'center'}}><TouchableOpacity onPress={newbookingHandler}><View style={{alignItems: 'center'}}><View style={{height: 150, width: 150, textAlign:'center', backgroundColor: 'rgba(255,255,255, 0.5)', alignItems: 'center', justifyContent:'center', borderRadius: 6}}><Image style={{height:100, width: 100}} source={require('../assets/cherry-delivery.png')}></Image><Text style={{textAlign: 'center'}}>New Bookings</Text></View>
+        </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={confirmedHandler}>
+        <View style={{marginTop: 10,height: 150, width: 150, textAlign:'center', backgroundColor: 'rgba(255,255,255, 0.5)', alignItems: 'center', justifyContent:'center', borderRadius: 6}}><Image style={{height:100, width: 100}} source={require('../assets/eastwood-delivery.png')}></Image><Text style={{textAlign: 'center'}}>Confirmed Bookings</Text></View>
+     
+        </TouchableOpacity>
+        </View>
+
+    } else {
+        vectors = <View style={{alignItems: 'center'}}><View style={{height: 150, width: 150, textAlign:'center', backgroundColor: 'rgba(0,0,0, 0.5)', alignItems: 'center', justifyContent:'center', borderRadius: 6}}><Image style={{height:100, width: 100}} source={require('../assets/cherry-delivery.png')}></Image><Text style={{textAlign: 'center'}}>New Bookings</Text></View>
+        <View style={{marginTop: 10,height: 150, width: 150, textAlign:'center', backgroundColor: 'rgba(0,0,0, 0.5)', alignItems: 'center', justifyContent:'center', borderRadius: 6}}><Image style={{height:100, width: 100}} source={require('../assets/eastwood-delivery.png')}></Image><Text style={{textAlign: 'center'}}>Confirmed Bookings</Text></View>
+        </View>
+    }
+
     let onlinebtn;
 
     if(isonline) {
-        onlinebtn = <Button mode="contained" color="#7bf037" onPress={newbookingHandler}>new bookings</Button>
+        onlinebtn = <View><Button mode="contained" color="#7bf037" onPress={newbookingHandler}>new bookings</Button><Button mode="contained" style={{marginTop: 10}} color="#fcba03" onPress={newbookingHandler}>confirmed</Button></View>
+
     } else {
-        onlinebtn = <Button mode="contained" color="#7bf037" disabled onPress={newbookingHandler}>new bookings</Button>
+        onlinebtn = <View><Button mode="contained" color="#7bf037" disabled onPress={newbookingHandler}>new bookings</Button><Button mode="contained" style={{marginTop: 10}} color="#fcba03" disabled onPress={newbookingHandler}>confirmed</Button></View>
     }
 
     let showonline;
@@ -107,7 +130,8 @@ const Dashboard = props => {
             </View> */}
             <View style={styles.btn}>
             {/* <Button mode="contained"  color="#7bf037" onPress={newbookingHandler}>new bookings</Button> */}
-            {onlinebtn}
+            {/* {onlinebtn} */}
+            {vectors}
             </View>
 
             <View style={styles.triggers}>
@@ -118,8 +142,11 @@ const Dashboard = props => {
                     <Button mode="contained" color="#db1d33" style={styles.btntrig} onPress={setoffline}>offline</Button>
                 </View>
             </View>
-            <View style={styles.btn}>
+            {/* <View style={styles.btn}>
             <Button mode="contained" color="grey">help</Button>
+            </View> */}
+           
+            <View style={{alignItems: 'center', marginTop: 10}}><View style={{height: 150, width: 150, textAlign:'center', backgroundColor: 'rgba(255,255,255, 0.5)', alignItems: 'center', justifyContent:'center', borderRadius: 6}}><Image style={{height:100, width: 100}} source={require('../assets/marginalia-unsubscribed.png')}></Image><Text style={{textAlign: 'center'}}>Help</Text></View>
             </View>
             </View>
             <View>
@@ -135,7 +162,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         alignItems: 'center',
-        marginTop: '40%',
+        marginTop: '20%',
         position: 'absolute',
         marginLeft: '30%',
         marginRight: '30%'

@@ -3,11 +3,17 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Dashboard from '../screens/dashboard';
 import Newbookings from '../screens/newbookings';
 import MapScreenview from '../screens/MapScreenView';
+import Confirmed from '../screens/confirmedscreen';
+import MapconfirmedScreenview from '../screens/Mapconfirmedscreen';
+import Journeyscreen from '../screens/journeyscreen';
 
 const Deliverynav = createStackNavigator({
     Dashboard: Dashboard,
     Newbookings: Newbookings,
-    Mapview: MapScreenview
+    Mapview: MapScreenview,
+    Confirmed: Confirmed,
+    Mapconfirmedview: MapconfirmedScreenview,
+    Mapjourneyview: Journeyscreen
 }, {
     defaultNavigationOptions : {
         headerStyle: {

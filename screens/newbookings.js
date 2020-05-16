@@ -1,5 +1,5 @@
-import React, { Component,  useState } from 'react'
-import {View, Text, Alert, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import React, { Component,  useState, useEffect } from 'react'
+import {View, Text, Alert, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, FlatList, Image} from 'react-native';
 import {Button, Card, Title, Paragraph} from 'react-native-paper';
 
 import * as Maplocation from 'expo-location';
@@ -23,6 +23,11 @@ const Newbookings = props => {
         }
         return true
     } 
+
+    useEffect(() => {
+        driversHandler()
+    },[booking])
+    
 
     const locationHandler = async () => {
         const haspermission = await Permissionverify()
@@ -140,7 +145,9 @@ const Newbookings = props => {
         <View style={styles.main}>
         {/* <ScrollView style={styles.view}> */}
             <View style={styles.locate}>
-            <Button color="purple" onPress={locationHandler}>locate me</Button>
+            {/* <Button color="purple" onPress={locationHandler}>locate me</Button> */}
+            <View style={{alignItems: 'center', marginBottom: 10}}><TouchableOpacity onPress={locationHandler}><View style={{height: 150, width: 150, textAlign:'center', backgroundColor: 'rgba(255,255,255, 0.5)', alignItems: 'center', justifyContent:'center', borderRadius: 6}}><Image style={{height:100, width: 100}} source={require('../assets/marginalia-location-access.png')}></Image><Text style={{textAlign: 'center'}}>Set Location</Text></View></TouchableOpacity>
+            </View>
             </View>
             {/* <View style={styles.locate}>
             <Button color="blue" onPress={setlocation}>set location</Button>
@@ -156,7 +163,7 @@ const Newbookings = props => {
 <FlatList
         data={booking}
         renderItem={({ item }) => {return (
-            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapview', {lat: item.lat, lng: item.lng })}}><View style={styles.tile}><Text>{item.time}</Text><Text>Farm to Dambulla </Text></View></TouchableOpacity> 
+            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapview', {lat: item.lat, lng: item.lng, time: item.time, keyid: item.id })}}><View style={styles.tile}><Text>{item.time}</Text><Text>Farm to Dambulla </Text></View></TouchableOpacity> 
         )}} 
         keyExtractor={item => item.id}
       />

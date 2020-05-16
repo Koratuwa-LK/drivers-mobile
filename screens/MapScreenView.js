@@ -5,13 +5,14 @@ import MapViewDirections from 'react-native-maps-directions';
 import * as Maplocation from 'expo-location';
 import env from '../vars/env';
 import { IconButton, Button } from 'react-native-paper';
+import axios from '../axios-onlinelist';
 
 const MapScreenview = (props) => {
 
     const markercoordinateswo = props.navigation.getParam('location')
     let markercoordinates = {
-        latitude: props.navigation.getParam('lat'),
-        longitude: props.navigation.getParam('lng')
+        latitude: props.navigation.getParam('lat') ? props.navigation.getParam('lat') : 0,
+        longitude: props.navigation.getParam('lng') ? props.navigation.getParam('lng') :0
     }
 
     /* if(markercoordinateswo){
@@ -56,6 +57,35 @@ const MapScreenview = (props) => {
         longitude: /* -122.43 */ props.navigation.getParam('lng'),
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421 
+    }
+
+    const confirmHandler = () => {
+      axios.post('/confirmedbookings.json', {driver_name: 'tony', farmer_name: 'farmer_1',date: new Date, time: props.navigation.getParam('time'), status: 'Confirmed', userlocation: {lat: props.navigation.getParam('lat'), lng: props.navigation.getParam('lng')}, driverlocation: {lat: userlocation.latitude, lng: userlocation.longitude}})
+      .then(response => {
+        console.log(response)
+      }).catch(err => {
+        console.log(err)
+      })
+      deleteHandler()
+    }
+
+    const declineHandler = () => {
+      axios.post('/declinedbookings.json', {driver_name: 'tony', farmer_name: 'farmer_1',date: new Date, time: props.navigation.getParam('time'), status: 'Confirmed'})
+      .then(response => {
+        console.log(response)
+      }).catch(err => {
+        console.log(err)
+      })
+      deleteHandler()
+    }
+
+    const deleteHandler = () => {
+      axios.delete('/farmerbookings/'+ props.navigation.getParam('keyid') +'/.json')
+      .then(response => {
+        console.log(response)
+      }).catch(err => {
+        console.log(err)
+      })
     }
 
     const mapStyle = [
@@ -261,10 +291,10 @@ const MapScreenview = (props) => {
             </MapView>
             <View style={styles.btns}>
             <View style={styles.btn}>
-              <Button mode="contained" color="#7bf037">confirm</Button>
+              <Button mode="contained" onPress={confirmHandler} color="#7bf037">confirm</Button>
               </View>
               <View style={styles.btn}>
-              <Button mode="contained" color="#ed1b11">decline</Button>
+              <Button mode="contained" onPress={declineHandler} color="#ed1b11">decline</Button>
               </View>
             </View>
             </View>
