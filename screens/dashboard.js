@@ -2,13 +2,14 @@ import React, { Component, useState } from 'react'
 import {View, Text, StyleSheet, ImageBackground, Alert,TouchableOpacity, Image} from 'react-native';
 import {Button} from 'react-native-paper';
 import axios from '../axios-onlinelist';
+import { AuthContext } from '../Components/context'
 
 const Dashboard = props => {
 
     const[isonline, setisonline] = useState(true)
     const[setisoffline, isoffline] = useState()
     
-
+    const { signOut }= React.useContext(AuthContext)
 
     const newbookingHandler = () => {
         if(isonline) {
@@ -140,6 +141,10 @@ const Dashboard = props => {
                 </View>
                 <View>
                     <Button mode="contained" color="#db1d33" style={styles.btntrig} onPress={setoffline}>offline</Button>
+                </View>
+
+                <View>
+                    <Button mode="contained" color="#841584" style={styles.btntrig} onPress={()=>{signOut()}}>Sign Out</Button>
                 </View>
             </View>
             {/* <View style={styles.btn}>
