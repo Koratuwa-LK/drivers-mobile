@@ -3,25 +3,45 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Formik } from 'formik';
 import { AuthContext } from '../Components/context'
 import { Button, TextInput } from 'react-native-paper';
-
+import * as yup from 'yup'; 
 
 export default function RegisterScreen({ navigation }) {
 
   const { signUp } = React.useContext(AuthContext)
 
   const handleSubmit = (values) => {
-    //console.log(values.mobile_no)
+    delete values.passwordConfirmation;
     signUp(values)
   }
+
+  let registerSchema = yup.object({
+    mobile_no:yup.string().required('Mobile No is Required').test('len','Must Need to have 10 digits',val=>(val!=undefined)?(val.length===10)?true:false:false),
+    password: yup.string()
+            .required('No password provided.') 
+            .min(8, 'Password is too short - should be 8 chars minimum.')
+            .matches(/[a-zA-Z0-9]/, 'Password can only contain Latin letters or Numbers.'),
+    first_name:yup.string().required('First Name is Required'),
+    last_name:yup.string().required('Last Name is Required'),
+    passwordConfirmation: yup.string()
+     .oneOf([yup.ref('password'), null], 'Passwords must match'),
+    nic_no:yup.string().required('NIC No is Required'),
+    nearest_eco_center:yup.string().required('Required Field'),
+    vehicle_color:yup.string().required('Vehicle Color is Required'),
+    vehicle_type:yup.string().required('Vehicle Type is Required'),
+    maximam_weight_can_carry:yup.string().required('This field is Required'),
+    vehicle_plate_no:yup.string().required('Vehicle Plate No is Required'),
+})
+
   return (
     <ScrollView style={styles.scrollView}>
       <View>
         <Text style={styles.txtLogin}>Fill These Details</Text>
         <Formik
-          initialValues={{ password: '', first_name: '', last_name: '', mobile_no: '', nic_no: '', nearest_eco_center: '', vehicle_color: '', vehicle_type: '', maximam_weight_can_carry: '', vehicle_plate_no: '' }}
+          initialValues={{ password: '', first_name: '', last_name: '', mobile_no: '', nic_no: '', nearest_eco_center: '', vehicle_color: '',passwordConfirmation:'', vehicle_type: '', maximam_weight_can_carry: '', vehicle_plate_no: '' }}
           onSubmit={values => handleSubmit(values)}
+          validationSchema={registerSchema}
         >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
+          {({ handleChange, handleBlur, handleSubmit, values,touched,errors}) => (
             <View>
               <TextInput
                 style={styles.textInputTop}
@@ -31,6 +51,7 @@ export default function RegisterScreen({ navigation }) {
                 label="First Name"
                 mode="outlined"
               />
+              <Text style={styles.errorMsg}>{touched.first_name && errors.first_name}</Text>
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('last_name')}
@@ -39,6 +60,7 @@ export default function RegisterScreen({ navigation }) {
                 label="Last Name"
                 mode="outlined"
               />
+              <Text style={styles.errorMsg}>{touched.last_name && errors.last_name}</Text>
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('mobile_no')}
@@ -48,6 +70,7 @@ export default function RegisterScreen({ navigation }) {
                 keyboardType="phone-pad"
                 mode="outlined"
               />
+              <Text style={styles.errorMsg}>{touched.mobile_no && errors.mobile_no}</Text>
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('password')}
@@ -57,15 +80,17 @@ export default function RegisterScreen({ navigation }) {
                 secureTextEntry={true}
                 mode="outlined"
               />
-              {/* <TextInput
+              <Text style={styles.errorMsg}>{touched.password && errors.password}</Text>
+              <TextInput
               style={styles.textInput}
-              onChangeText={handleChange('password2')}
-              onBlur={handleBlur('password2')}
-              value={values.password2}
+              onChangeText={handleChange('passwordConfirmation')}
+              onBlur={handleBlur('passwordConfirmation')}
+              value={values.passwordConfirmation}
               label="ReEnter Password"
               secureTextEntry={true} 
               mode="outlined"
-            /> */}
+            />
+            <Text style={styles.errorMsg}>{touched.passwordConfirmation && errors.passwordConfirmation}</Text>
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('nic_no')}
@@ -74,6 +99,7 @@ export default function RegisterScreen({ navigation }) {
                 label="NIC NO"
                 mode="outlined"
               />
+              <Text style={styles.errorMsg}>{touched.nic_no && errors.nic_no}</Text>
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('nearest_eco_center')}
@@ -82,6 +108,7 @@ export default function RegisterScreen({ navigation }) {
                 label="Nearest Eco Center"
                 mode="outlined"
               />
+              <Text style={styles.errorMsg}>{touched.nearest_eco_center && errors.nearest_eco_center}</Text>
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('vehicle_color')}
@@ -90,6 +117,7 @@ export default function RegisterScreen({ navigation }) {
                 label="Vehicle Color"
                 mode="outlined"
               />
+              <Text style={styles.errorMsg}>{touched.vehicle_color && errors.vehicle_color}</Text>
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('vehicle_type')}
@@ -98,6 +126,7 @@ export default function RegisterScreen({ navigation }) {
                 label="Vehicle Type"
                 mode="outlined"
               />
+              <Text style={styles.errorMsg}>{touched.vehicle_type && errors.vehicle_type}</Text>
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('maximam_weight_can_carry')}
@@ -107,6 +136,7 @@ export default function RegisterScreen({ navigation }) {
                 keyboardType="numeric"
                 mode="outlined"
               />
+              <Text style={styles.errorMsg}>{touched.maximam_weight_can_carry && errors.maximam_weight_can_carry}</Text>
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('vehicle_plate_no')}
@@ -115,6 +145,7 @@ export default function RegisterScreen({ navigation }) {
                 label="Vehicle Plate No"
                 mode="outlined"
               />
+              <Text style={styles.errorMsg}>{touched.vehicle_plate_no && errors.vehicle_plate_no}</Text>
               {/* <Button style={styles.btn} onPress={handleSubmit} title="Submit" /> */}
               <Button style={styles.btn} mode="contained" onPress={handleSubmit}>
                 <Text style={{ color: "white" }}>Sign Up</Text>
@@ -152,5 +183,9 @@ const styles = StyleSheet.create({
     color: '#4fc116',
     marginHorizontal: 15,
   },
+  errorMsg:{
+    color:'red',
+    marginHorizontal: 15,
+}
 
 });

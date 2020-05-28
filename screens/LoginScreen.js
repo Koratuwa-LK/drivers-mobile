@@ -3,15 +3,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Formik } from 'formik';
 import { AuthContext } from '../Components/context'
 import { Button, TextInput } from 'react-native-paper';
+import * as yup from 'yup'; 
 
 export default function LoginScreen({ navigation }) {
 
     const { signIn } = React.useContext(AuthContext)
 
     const handleSubmit = (values) => {
-        //console.log(values.mobile_no)
         signIn(values.mobile_no, values.password)
     }
+
+    let loginSchema = yup.object({
+        mobile_no:yup.string().required('Mobile No is Required').test('len','Must Need to have 10 digits',val=>(val!=undefined)?(val.length===10)?true:false:false),
+        password:yup.string().required('Password is Required')
+    })
 
     return (
         <View style={styles.container}>
@@ -22,8 +27,9 @@ export default function LoginScreen({ navigation }) {
                 <Formik
                     initialValues={{ mobile_no: '', password: '' }}
                     onSubmit={values => handleSubmit(values)}
+                    validationSchema={loginSchema}
                 >
-                    {({ handleChange, handleBlur, handleSubmit, values }) => (
+                    {({ handleChange, handleBlur, handleSubmit, values,errors,touched}) => (
                         <View>
                             <TextInput
                                 style={styles.textInput}
@@ -34,6 +40,7 @@ export default function LoginScreen({ navigation }) {
                                 keyboardType="phone-pad"
                                 mode="outlined"
                             />
+                            <Text style={styles.errorMsg}>{touched.mobile_no && errors.mobile_no}</Text>
                             <TextInput
                                 style={styles.textInput}
                                 onChangeText={handleChange('password')}
@@ -43,6 +50,7 @@ export default function LoginScreen({ navigation }) {
                                 secureTextEntry={true}
                                 mode="outlined"
                             />
+                            <Text style={styles.errorMsg}>{touched.password && errors.password}</Text>
 
                             <Button style={styles.btnSignIn} mode="contained" onPress={handleSubmit}>
                                 <Text style={{ color: "white" }}>Sign In</Text>
@@ -89,6 +97,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         marginHorizontal: 15
+    },
+    errorMsg:{
+        color:'red'
     }
 });
 
