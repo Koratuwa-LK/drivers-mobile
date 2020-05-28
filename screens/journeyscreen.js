@@ -10,8 +10,8 @@ export default class Journeyscreen extends Component {
         longitude: 79.907201
       }, */
       destination: {
-        latitude: /* 6.0558904 */ this.props.navigation.getParam('lat'),
-        longitude: /* 80.1769774 */ this.props.navigation.getParam('lng')
+        latitude: /* 6.0558904 */ props.route.params.lat,
+        longitude: /* 80.1769774 */ props.route.params.lng
       },
       params: [
         {
