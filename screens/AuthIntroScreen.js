@@ -7,11 +7,11 @@ export default function AuthIntroScreen({ navigation }) {
     return (
         <ScrollView>
             <View style={styles.imgContainer}>
-                <Image style={styles.img} resizeMode='cover' source={require('../assets/img/farmer.jpg')} />
+                <Image style={styles.img} resizeMode='cover' source={require('../assets/img/farmer2.png')} />
             </View>
             <View style={styles.container}>
 
-                <Text style={styles.txt}>AgroLanka</Text>
+                <Text style={styles.txt}>KrushiGanudenu.lk</Text>
                 <Text style={styles.txtDescription}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at felis nec tellus lacinia hendrerit. </Text>
                 <View style={styles.btnContainer}>
                     <Button style={styles.btnSignUp} mode="outlined" onPress={() => navigation.navigate('Register')}>
