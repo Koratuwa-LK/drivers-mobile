@@ -1,21 +1,110 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Formik } from 'formik';
 import { AuthContext } from '../Components/context'
 import { Button, TextInput } from 'react-native-paper';
-import * as yup from 'yup'; 
+import * as yup from 'yup';
+import * as firebase from 'firebase';
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
+import { AsyncStorage } from 'react-native';
+
+
 
 export default function LoginScreen({ navigation }) {
 
-    const { signIn } = React.useContext(AuthContext)
+
+    YellowBox.ignoreWarnings(['Setting a timer']);
+    const _console = _.clone(console);
+    console.warn = message => {
+        if (message.indexOf('Setting a timer') <= -1) {
+            _console.warn(message);
+        }
+    };
+
+    const [state, setstate] = useState({
+        email: '',
+        password: '',
+        error: '',
+        loading: false
+    })
+
+
+    const [driver, setDriver] = useState(null)
 
     const handleSubmit = (values) => {
-        signIn(values.mobile_no, values.password)
+        firebase.auth().signInWithEmailAndPassword(values.email, values.password)
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+
+                // User not found? Create user.
+                if (errorCode === 'auth/user-not-found') {
+                   
+                        // Handle Errors here.
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        if (errorCode == 'email-already-in-use') {
+                            alert('You already have an account with that email.');
+                        } else if (errorCode == 'auth/invalid-email') {
+                            alert('Please provide a valid email');
+                        } else if (errorCode == 'auth/weak-password') {
+                            alert('The password is too weak.');
+                        } else {
+                            alert(errorMessage);
+                        }
+                        console.log(error);
+              
+                    // Wrong Password Error
+                } else if (errorCode === 'auth/wrong-password') {
+                    // Check if User has signed up with a OAuthProvider
+                    alert('Wrong password. Please try again');
+                } else {
+                    alert(errorMessage);
+                }
+                console.log(error);
+            })
+            .then((res)=>{
+            onLoginSuccess()
+        firebase.database().ref('drivers').on('value', (snapshot) => {
+            var drivers = snapshot.val();
+            
+            const tempDriver = [];
+           
+            for (let key in drivers) {
+               if (drivers[key]['email'] == values.email) {
+                    async function storeUser() {
+                        console.log(drivers[key])
+                        try {
+                          await AsyncStorage.setItem('username', drivers[key].first_name)
+                        } catch (e) {
+                          console.log(e)
+                        }
+                      }
+            
+                      storeUser();
+                }
+                
+            }
+
+            
+        }
+        )
+       
+        
+})
+    }
+    const onLoginSuccess = () => {
+        setstate({
+            error: '',
+            loading: false
+
+        })
     }
 
     let loginSchema = yup.object({
-        mobile_no:yup.string().required('Mobile No is Required').test('len','Must Need to have 10 digits',val=>(val!=undefined)?(val.length===10)?true:false:false),
-        password:yup.string().required('Password is Required')
+        email: yup.string().required('Email is Required').email('Invalid Format'),
+        password: yup.string().required('Password is Required')
     })
 
     return (
@@ -23,24 +112,23 @@ export default function LoginScreen({ navigation }) {
 
             <View >
                 <Text style={styles.txtLogin}>Login</Text>
-                <Text style={styles.txtLoginHint}>Login with Mobile No and Password</Text>
+                <Text style={styles.txtLoginHint}>Login with Email and Password</Text>
                 <Formik
-                    initialValues={{ mobile_no: '', password: '' }}
+                    initialValues={{ email: '', password: '' }}
                     onSubmit={values => handleSubmit(values)}
                     validationSchema={loginSchema}
                 >
-                    {({ handleChange, handleBlur, handleSubmit, values,errors,touched}) => (
+                    {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                         <View>
                             <TextInput
                                 style={styles.textInput}
-                                onChangeText={handleChange('mobile_no')}
-                                onBlur={handleBlur('mobile_no')}
-                                value={values.mobile_no}
-                                label="Mobile No"
-                                keyboardType="phone-pad"
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                                value={values.email}
+                                label="Email"
                                 mode="outlined"
                             />
-                            <Text style={styles.errorMsg}>{touched.mobile_no && errors.mobile_no}</Text>
+                            <Text style={styles.errorMsg}>{touched.email && errors.email}</Text>
                             <TextInput
                                 style={styles.textInput}
                                 onChangeText={handleChange('password')}
@@ -98,8 +186,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: 15
     },
-    errorMsg:{
-        color:'red'
+    errorMsg: {
+        color: 'red'
     }
 });
 

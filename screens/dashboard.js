@@ -3,13 +3,13 @@ import {View, Text, StyleSheet, ImageBackground, Alert,TouchableOpacity, Image} 
 import {Button} from 'react-native-paper';
 import axios from '../axios-onlinelist';
 import { AuthContext } from '../Components/context'
-
+import * as firebase from 'firebase';
 const Dashboard = props => {
 
     const[isonline, setisonline] = useState(true)
     const[setisoffline, isoffline] = useState()
     
-    const { signOut }= React.useContext(AuthContext)
+  
 
     const newbookingHandler = () => {
         if(isonline) {
@@ -144,7 +144,7 @@ const Dashboard = props => {
                 </View>
 
                 <View>
-                    <Button mode="contained" color="#841584" style={styles.btntrig} onPress={()=>{signOut()}}>Sign Out</Button>
+                    <Button mode="contained" color="#841584" style={styles.btntrig} onPress={()=>{firebase.auth().signOut()}}>Sign Out</Button>
                 </View>
             </View>
             {/* <View style={styles.btn}>
