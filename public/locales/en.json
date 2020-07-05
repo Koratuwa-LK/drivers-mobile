@@ -1,0 +1,20 @@
+{
+    "home": "Dashboard",
+    "marketplace": "MARKETPLACE",
+    "aboutus": "ABOUT US",
+    "stockrequest": "STOCK REQUEST",
+    "krushiganudenu": "KRUSHIGANUDENU",
+    "store": "STORE",
+    "vegetabletype": "Vegetable Type",
+    "ecocenter": "Eco Center",
+    "details":"Details",
+    "buy":"Buy",
+    "logout":"Log Out",
+    "online":"online",
+    "offline":"offline",
+    "change_language":"change the language",
+    "log_out":"log out",
+    "choose_language":"choose Language",
+    "new_bookings":"New Bookings",
+    "confiremed_bookings":"Confirmed Bookings"
+}
