@@ -77,6 +77,7 @@ export default function LoginScreen({ navigation }) {
                         console.log(drivers[key])
                         try {
                           await AsyncStorage.setItem('username', drivers[key].first_name)
+                          await AsyncStorage.setItem('ecocen', drivers[key].nearest_eco_center)
                         } catch (e) {
                           console.log(e)
                         }

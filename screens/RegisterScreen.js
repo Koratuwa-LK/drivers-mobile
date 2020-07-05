@@ -62,6 +62,8 @@ export default function RegisterScreen({ navigation }) {
                        
           try {
             await AsyncStorage.setItem('username', values.first_name)
+            await AsyncStorage.setItem('ecocen', values.nearest_eco_center)
+          
           } catch (e) {
             console.log(e)
           }

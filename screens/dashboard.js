@@ -1,4 +1,5 @@
-import React, { Component, useState } from 'react'
+
+import React, { Component, useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ImageBackground, Alert, TouchableOpacity, Image } from 'react-native';
 import { Button } from 'react-native-paper';
 import axios from '../axios-onlinelist';
@@ -8,10 +9,14 @@ import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import en from '../public/locales/en.json';
 import sn from '../public/locales/sn.json';
+import {AsyncStorage} from 'react-native';
+import * as Maplocation from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 
 
 const Dashboard = props => {
+
 
     const [isonline, setisonline] = useState(true)
     const [setisoffline, isoffline] = useState()
@@ -29,9 +34,34 @@ const Dashboard = props => {
 
     
 
+   
+
+    const[isonline, setisonline] = useState(true)
+    const[setisoffline, isoffline] = useState()
+    const[driversname, setdriversname] = useState('')
+    const[ecocen, setecocen] = useState('')
+    
+    const [isfetching, setisfetching] = useState(null)
+    const [locationpicked, setlocationpicked] = useState()
+    
+
+
+  const Permissionverify = async () => {
+    const result = await Permissions.askAsync(Permissions.LOCATION)
+    if(result.status != 'granted'){
+        Alert.alert('permission need','need permissions to proceed',
+        [{text: 'OK'}]
+        )
+        return false
+    }
+    return true
+} 
+
+  
+
     const newbookingHandler = () => {
-        if (isonline) {
-            props.navigation.navigate('Newbookings')
+        if(isonline) {
+        props.navigation.navigate('Newbookings', {name: driversname})
         } else {
             Alert.alert(
                 /* 'Couldn`t locate you',
@@ -48,6 +78,53 @@ const Dashboard = props => {
         props.navigation.navigate('Confirmed')
     }
 
+    useEffect (() => {
+    
+        locationHandler()
+    async function setdriver() {    
+        const driver = await AsyncStorage.getItem('username');
+        const ecocen = await AsyncStorage.getItem('ecocen');  
+        setdriversname(driver)
+        setecocen(ecocen)
+    }
+
+        setdriver();
+        console.log(driversname.first_name)
+    }, [])
+
+
+    const locationHandler = async () => {
+        const haspermission = await Permissionverify()
+        if(!haspermission) {
+            return
+        }
+    
+        setisfetching(true)
+    
+        try {
+            const location = await Maplocation.getCurrentPositionAsync({timeout: 5000})
+            console.log(location)
+            setlocationpicked({
+                lat: location.coords.latitude,
+                lng: location.coords.longitude
+            })
+            props.onpickedlocation({
+                lat: location.coords.latitude,
+                lng: location.coords.longitude
+            })
+    
+        } catch (err) {
+            Alert.alert(
+                /* 'Couldn`t locate you',
+                'Please try later or pick a location on the map',
+                [{text: 'OK'}] */
+                'Successfully located',
+                'Your current location successfully saved',
+                [{text: 'OK'}]
+            )
+        }
+    }
+    
 
 
 
@@ -63,15 +140,6 @@ const Dashboard = props => {
 
     const setonline = () => {
         setisonline(true)
-        axios.patch('/drivers/tony/.json', { name: 'tony', status: 'Online' })
-            .then(response => {
-
-                console.log(response)
-            }).catch(err => {
-                console.log(err)
-            })/* ,
-        () => setisonline(true)
-         */
     }
 
     /*     const setoffline = () => {
@@ -89,14 +157,6 @@ const Dashboard = props => {
 
     const setoffline = () => {
         setisonline(false)
-        axios.patch('/drivers/tony/.json', { name: 'tony', status: 'Offline' })
-            .then(response => {
-
-                console.log(response)
-            }).catch(err => {
-                console.log(err)
-            })/* ,
-        () => setisonline(false) */
     }
 
     let vectors;
@@ -140,6 +200,7 @@ const Dashboard = props => {
         // <ImageBackground source={{uri: 'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'}} style={styles.imgbg}>
 
 
+
         <ImageBackground source={{ uri: 'https://images.unsplash.com/photo-1555498386-50deae36950a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80' }} style={styles.imgbg}>
 
 
@@ -164,6 +225,7 @@ const Dashboard = props => {
                                             text: 'English',
                                             onPress: () => {
                                                 console.log('English Selected')
+
 
                                                 setLanguage('en')
                                             }

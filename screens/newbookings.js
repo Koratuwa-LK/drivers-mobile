@@ -5,6 +5,7 @@ import {Button, Card, Title, Paragraph} from 'react-native-paper';
 import * as Maplocation from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
+import {AsyncStorage} from 'react-native'; 
 import axios from '../axios-onlinelist';
 
 const Newbookings = props => {
@@ -12,6 +13,8 @@ const Newbookings = props => {
     const [locationpicked, setlocationpicked] = useState()
     const [isfetching, setisfetching] = useState(null)
     const [booking, setbooking] = useState()
+    
+    const[driversname, setdriversname] = useState('')
 
     const Permissionverify = async () => {
         const result = await Permissions.askAsync(Permissions.LOCATION)
@@ -26,6 +29,16 @@ const Newbookings = props => {
 
     useEffect(() => {
         driversHandler()
+        // console.log('name' ,props.route.params.name)
+        async function setdriver() {    
+            const driver = await AsyncStorage.getItem('username');
+             
+            setdriversname(driver)
+            
+        }
+    
+            setdriver();
+        
     },[booking])
     
 
@@ -61,6 +74,7 @@ const Newbookings = props => {
         }
         setisfetching(false)
         driversHandler()
+        
 
     }
 
@@ -69,7 +83,7 @@ const Newbookings = props => {
     }
 
     const setlocation = () => {
-        axios.patch('/drivers/tony/.json',{location: locationpicked})
+        axios.patch('/drivers/' + props.route.params.name +'/.json',{location: locationpicked})
         .then(response => {
             console.log(response)
         })
@@ -114,7 +128,7 @@ const Newbookings = props => {
             const hotel = []
             const obj = response.data
             for(let key in obj) {
-               if(obj[key].drivername == 'john') {
+               if(obj[key].drivername == driversname) {
               hotel.push({
                   id: key,
                   
@@ -122,7 +136,8 @@ const Newbookings = props => {
                   lng: obj[key].lng,
                   time: obj[key].time,
                   farmername: obj[key].farmername,
-                  farmernumber: obj[key].farmernumer
+                  farmernumber: obj[key].farmernumer,
+                  date: obj[key].date
               })
             }
         }
@@ -163,7 +178,7 @@ const Newbookings = props => {
 <FlatList
         data={booking}
         renderItem={({ item }) => {return (
-            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapview', {lat: item.lat, lng: item.lng, time: item.time, keyid: item.id })}}><View style={styles.tile}><Text>{item.time}</Text><Text>Farm to Dambulla </Text></View></TouchableOpacity> 
+            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapview', {lat: item.lat, lng: item.lng, time: item.time, keyid: item.id, farmer: item.farmername, farmernumber: item.farmernumber })}}><View style={styles.tile}><Text>{item.time}</Text><Text>Farm to Dambulla </Text></View></TouchableOpacity> 
         )}} 
         keyExtractor={item => item.id}
       />
