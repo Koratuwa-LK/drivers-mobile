@@ -60,7 +60,7 @@ const MapScreenview = (props) => {
   }
 
   const confirmHandler = () => {
-    axios.post('/confirmedbookings.json', { driver_name: 'tony', farmer_name: 'farmer_1', date: new Date, time: props.route.params('time'), status: 'Confirmed', userlocation: { lat: props.route.params.lat, lng: props.route.params.lng }, driverlocation: { lat: userlocation.latitude, lng: userlocation.longitude } })
+    axios.post('/confirmedbookings.json', { driver_name: 'tony', farmer_name: 'farmer_1', date: new Date, time: props.route.params.time, status: 'Confirmed', userlocation: { lat: props.route.params.lat, lng: props.route.params.lng }, driverlocation: { lat: userlocation.latitude, lng: userlocation.longitude } })
       .then(response => {
         console.log(response)
       }).catch(err => {
@@ -70,7 +70,7 @@ const MapScreenview = (props) => {
   }
 
   const declineHandler = () => {
-    axios.post('/declinedbookings.json', { driver_name: 'tony', farmer_name: 'farmer_1', date: new Date, time: props.route.params('time'), status: 'Confirmed' })
+    axios.post('/declinedbookings.json', { driver_name: 'tony', farmer_name: 'farmer_1', date: new Date, time: props.route.params.time, status: 'Declined' })
       .then(response => {
         console.log(response)
       }).catch(err => {
@@ -80,7 +80,7 @@ const MapScreenview = (props) => {
   }
 
   const deleteHandler = () => {
-    axios.delete('/farmerbookings/' + props.route.params('keyid') + '/.json')
+    axios.delete('/farmerbookings/' + props.route.params.keyid + '/.json')
       .then(response => {
         console.log(response)
       }).catch(err => {
