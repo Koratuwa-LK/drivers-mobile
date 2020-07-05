@@ -36,8 +36,7 @@ const Dashboard = props => {
 
    
 
-    const[isonline, setisonline] = useState(true)
-    const[setisoffline, isoffline] = useState()
+
     const[driversname, setdriversname] = useState('')
     const[ecocen, setecocen] = useState('')
     
