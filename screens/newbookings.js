@@ -114,7 +114,7 @@ const Newbookings = props => {
             const hotel = []
             const obj = response.data
             for(let key in obj) {
-               if(obj[key].drivername == 'tony') {
+               if(obj[key].drivername == 'john') {
               hotel.push({
                   id: key,
                   
