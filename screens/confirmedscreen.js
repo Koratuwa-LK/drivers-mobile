@@ -4,6 +4,7 @@ import {Button, Card, Title, Paragraph} from 'react-native-paper';
 
 import * as Maplocation from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import {AsyncStorage} from 'react-native'; 
 
 import axios from '../axios-onlinelist';
 
@@ -12,6 +13,8 @@ const Confirmed = props => {
     const [locationpicked, setlocationpicked] = useState()
     const [isfetching, setisfetching] = useState(null)
     const [booking, setbooking] = useState()
+    
+    const[driversname, setdriversname] = useState('')
 
     const Permissionverify = async () => {
         const result = await Permissions.askAsync(Permissions.LOCATION)
@@ -26,6 +29,15 @@ const Confirmed = props => {
 
     useEffect(() => {
         driversHandler()
+
+        async function setdriver() {    
+            const driver = await AsyncStorage.getItem('username');
+          
+            setdriversname(driver)
+    
+        }
+    
+            setdriver();
     },[booking])
     
 
@@ -114,7 +126,7 @@ const Confirmed = props => {
             const hotel = []
             const obj = response.data
             for(let key in obj) {
-               if(obj[key].driver_name == 'tony') {
+               if(obj[key].driver_name == driversname) {
               hotel.push({
                   id: key,
                   

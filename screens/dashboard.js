@@ -1,19 +1,54 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import {View, Text, StyleSheet, ImageBackground, Alert,TouchableOpacity, Image} from 'react-native';
 import {Button} from 'react-native-paper';
 import axios from '../axios-onlinelist';
 import { AuthContext } from '../Components/context'
 import * as firebase from 'firebase';
+import {AsyncStorage} from 'react-native'; 
+
+import * as Maplocation from 'expo-location';
+import * as Permissions from 'expo-permissions';
+
+
 const Dashboard = props => {
 
     const[isonline, setisonline] = useState(true)
     const[setisoffline, isoffline] = useState()
+    const[driversname, setdriversname] = useState('')
+    const[ecocen, setecocen] = useState('')
     
+    const [isfetching, setisfetching] = useState(null)
+    const [locationpicked, setlocationpicked] = useState()
+    
+
+    /* const Permissionverify = async () => {
+        const result = await Permissions.askAsync(Permissions.LOCATION)
+        if(result.status != 'granted'){
+            Alert.alert('permission need','need permissions to proceed',
+            [{text: 'OK'}]
+            )
+            return false
+        }
+        return true
+    } 
+   */
+
+  const Permissionverify = async () => {
+    const result = await Permissions.askAsync(Permissions.LOCATION)
+    if(result.status != 'granted'){
+        Alert.alert('permission need','need permissions to proceed',
+        [{text: 'OK'}]
+        )
+        return false
+    }
+    return true
+} 
+
   
 
     const newbookingHandler = () => {
         if(isonline) {
-        props.navigation.navigate('Newbookings')
+        props.navigation.navigate('Newbookings', {name: driversname})
         } else {
             Alert.alert(
                 /* 'Couldn`t locate you',
@@ -30,6 +65,52 @@ const Dashboard = props => {
         props.navigation.navigate('Confirmed')
     }
 
+    useEffect (() => {
+    
+        locationHandler()
+    async function setdriver() {    
+        const driver = await AsyncStorage.getItem('username');
+        const ecocen = await AsyncStorage.getItem('ecocen');  
+        setdriversname(driver)
+        setecocen(ecocen)
+    }
+
+        setdriver();
+        console.log(driversname.first_name)
+    }, [])
+
+
+    const locationHandler = async () => {
+        const haspermission = await Permissionverify()
+        if(!haspermission) {
+            return
+        }
+    
+        setisfetching(true)
+    
+        try {
+            const location = await Maplocation.getCurrentPositionAsync({timeout: 5000})
+            console.log(location)
+            setlocationpicked({
+                lat: location.coords.latitude,
+                lng: location.coords.longitude
+            })
+            props.onpickedlocation({
+                lat: location.coords.latitude,
+                lng: location.coords.longitude
+            })
+    
+        } catch (err) {
+            Alert.alert(
+                /* 'Couldn`t locate you',
+                'Please try later or pick a location on the map',
+                [{text: 'OK'}] */
+                'Successfully located',
+                'Your current location successfully saved',
+                [{text: 'OK'}]
+            )
+        }
+    }
     
 
 
@@ -45,7 +126,7 @@ const Dashboard = props => {
 
     const setonline = () => {
         setisonline(true)
-        axios.patch('/drivers/tony/.json', {name: 'tony',status: 'Online'})
+        axios.patch('/drivers/'+ driversname +'/.json', {ecocentre: ecocen, location: locationpicked, name: driversname ,status: 'Online'})
         .then(response => {
             
             console.log(response)
@@ -71,7 +152,7 @@ const Dashboard = props => {
 
     const setoffline = () => {
         setisonline(false)
-        axios.patch('/drivers/tony/.json', {name: 'tony', status: 'Offline'})
+        axios.patch('/drivers/'+ driversname +'/.json', {ecocentre: ecocen,name: driversname ,status: 'Offline'})
         .then(response => {
             
             console.log(response)
@@ -125,10 +206,13 @@ const Dashboard = props => {
 <ImageBackground source={{uri: 'https://images.unsplash.com/photo-1555498386-50deae36950a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80'}} style={styles.imgbg}>
         
         <View style={styles.main}>
+        
             <View style={styles.btns}>
             {/* <View style={styles.btn}>
             <Button color="#7bf037" >previous trips</Button>
             </View> */}
+
+<Text>{driversname}</Text>
             <View style={styles.btn}>
             {/* <Button mode="contained"  color="#7bf037" onPress={newbookingHandler}>new bookings</Button> */}
             {/* {onlinebtn} */}

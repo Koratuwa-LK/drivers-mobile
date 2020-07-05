@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Image, Icon } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -6,6 +6,8 @@ import * as Maplocation from 'expo-location';
 import env from '../vars/env';
 import { IconButton, Button } from 'react-native-paper';
 import axios from '../axios-onlinelist';
+import {AsyncStorage} from 'react-native'; 
+
 
 const MapScreenview = (props) => {
 
@@ -23,6 +25,8 @@ const MapScreenview = (props) => {
   } */
 
   const [userlocation, setuserlocation] = useState()
+  const[driversname, setdriversname] = useState('')
+
 
   useEffect(() => {
     async function locationset() {
@@ -39,7 +43,18 @@ const MapScreenview = (props) => {
       })
     }
     locationset()
+
+    async function setdriver() {    
+      const driver = await AsyncStorage.getItem('username');  
+      setdriversname(driver)
+  }
+
+      setdriver();
+      console.log(driversname.first_name)
   }, [])
+
+
+ 
 
   /* const userlocation = async () => {
       try {
@@ -60,7 +75,7 @@ const MapScreenview = (props) => {
   }
 
   const confirmHandler = () => {
-    axios.post('/confirmedbookings.json', { driver_name: 'tony', farmer_name: 'farmer_1', date: new Date, time: props.route.params.time, status: 'Confirmed', userlocation: { lat: props.route.params.lat, lng: props.route.params.lng }, driverlocation: { lat: userlocation.latitude, lng: userlocation.longitude } })
+    axios.post('/confirmedbookings.json', { driver_name: driversname , farmer_name: props.route.params.farmername, farmernumber: props.route.params.farmernumber , date: new Date, time: props.route.params.time, status: 'Confirmed', userlocation: { lat: props.route.params.lat, lng: props.route.params.lng }, driverlocation: { lat: userlocation.latitude, lng: userlocation.longitude } })
       .then(response => {
         console.log(response)
       }).catch(err => {
@@ -70,7 +85,7 @@ const MapScreenview = (props) => {
   }
 
   const declineHandler = () => {
-    axios.post('/declinedbookings.json', { driver_name: 'tony', farmer_name: 'farmer_1', date: new Date, time: props.route.params.time, status: 'Declined' })
+    axios.post('/declinedbookings.json', { driver_name: driversname , farmer_name: props.route.params.farmername, farmernumber: props.route.params.farmernumber, date: new Date, time: props.route.params.time, status: 'Declined' })
       .then(response => {
         console.log(response)
       }).catch(err => {
