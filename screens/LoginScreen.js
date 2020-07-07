@@ -78,6 +78,9 @@ export default function LoginScreen({ navigation }) {
                         try {
                           await AsyncStorage.setItem('username', drivers[key].first_name)
                           await AsyncStorage.setItem('ecocen', drivers[key].nearest_eco_center)
+                          
+            await AsyncStorage.setItem('size', values.maximam_weight_can_carry)
+            await AsyncStorage.setItem('pno', values.vehicle_plate_no)
                         } catch (e) {
                           console.log(e)
                         }

@@ -137,7 +137,10 @@ const Newbookings = props => {
                   time: obj[key].time,
                   farmername: obj[key].farmername,
                   farmernumber: obj[key].farmernumer,
-                  date: obj[key].date
+                //   date: obj[key].date,
+                crop: obj[key].crop,
+                quantity: obj[key].quantity,
+
               })
             }
         }
@@ -173,16 +176,18 @@ const Newbookings = props => {
             <View style={styles.btn}>
             <Button onPress={() => routingHandler(6.0558904,80.1769774)}>Galle</Button>
             </View> */}
-
-
+{/* <ScrollView> */}
 <FlatList
+// style={{marginBottom: 1000}}
+contentContainerStyle={{ paddingBottom: 5000}}
         data={booking}
         renderItem={({ item }) => {return (
-            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapview', {lat: item.lat, lng: item.lng, time: item.time, keyid: item.id, farmer: item.farmername, farmernumber: item.farmernumber })}}><View style={styles.tile}><Text>{item.time}</Text><Text>Farm to Dambulla </Text></View></TouchableOpacity> 
+            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapview', {lat: item.lat, lng: item.lng, time: item.time, keyid: item.id, farmer: item.farmername, farmernumber: item.farmernumber, crop: item.crop, quantity: item.quantity })}}><View style={styles.tile}><Text style={{fontWeight: 'bold'}}>{item.time}</Text><Text style={{fontWeight: 'bold'}}>{item.farmername} </Text><Text style={{fontWeight: 'bold'}}>{item.crop} </Text><Text style={{fontWeight: 'bold'}}>{item.quantity} kg</Text><Text style={{fontWeight: 'bold'}}>{item.farmernumber} </Text></View></TouchableOpacity> 
         )}} 
         keyExtractor={item => item.id}
       />
-
+      
+      {/* </ScrollView> */}
 {/* </ScrollView> */}
         </View>
 
@@ -204,24 +209,26 @@ const styles = StyleSheet.create({
 
     },
     main: {
+        flex: 1,
         justifyContent: 'center',
         textAlign: 'center',
         alignItems: 'center',
         marginTop: '15%',
        
         position: 'absolute',
-        marginLeft: '30%',
-        marginRight: '30%'
+        marginLeft: '20%',
+        marginRight: '10%'
         
     },
     tile: {
-        
+        lineHeight: 10,
         borderStyle: 'solid',
         borderWidth: 1,
         padding: 10,
         borderRadius: 10,
-        width: 150,
-        backgroundColor: 'rgba(245, 227, 34, 0.5)'
+        width: 250,
+        backgroundColor: 'white',
+        fontWeight: 'bold'
     },
     view: {
         marginBottom: 100

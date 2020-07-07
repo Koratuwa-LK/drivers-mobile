@@ -135,7 +135,10 @@ const Confirmed = props => {
                   time: obj[key].time,
                   userlocation: obj[key].userlocation,
                   farmername: obj[key].farmername,
-                  farmernumber: obj[key].farmernumer
+                  farmernumber: obj[key].farmernumber,
+                  quantity: obj[key].quantity,
+                  crop: obj[key].crop ,
+                  status: obj[key].status
               })
             }
         }
@@ -176,7 +179,7 @@ const Confirmed = props => {
 <FlatList
         data={booking}
         renderItem={({ item }) => {return (
-            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapconfirmedview', {lat: item.userlocation.lat, lng:item.userlocation.lng, time: item.time, keyid: item.id })}}><View style={styles.tile}><Text>{item.time}</Text><Text>Farm to Dambulla </Text></View></TouchableOpacity> 
+            <TouchableOpacity onPress={() => {props.navigation.navigate('Mapconfirmedview', {lat: item.userlocation.lat, lng:item.userlocation.lng, time: item.time, keyid: item.id })}}><View style={styles.tile}><Text style={{fontWeight: 'bold'}}>{item.time}</Text><Text style={{fontWeight: 'bold'}}>{item.farmername} </Text><Text style={{fontWeight: 'bold'}}>{item.crop} </Text><Text style={{fontWeight: 'bold'}}>{item.quantity} kg</Text><Text style={{fontWeight: 'bold'}}>{item.farmernumber} </Text><Text style={{fontWeight: 'bold', color: '#92eb34', fontSize: 15}}>Booking Confirmed </Text></View></TouchableOpacity> 
         )}} 
         keyExtractor={item => item.id}
       />
@@ -202,14 +205,15 @@ const styles = StyleSheet.create({
 
     },
     main: {
+        flex: 1,
         justifyContent: 'center',
         textAlign: 'center',
         alignItems: 'center',
         marginTop: '15%',
        
         position: 'absolute',
-        marginLeft: '30%',
-        marginRight: '30%'
+        marginLeft: '20%',
+        marginRight: '10%'
         
     },
     tile: {
@@ -218,8 +222,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         borderRadius: 10,
-        width: 150,
-        backgroundColor: 'rgba(245, 227, 34, 0.5)'
+        width: 250,
+        backgroundColor: 'white',
+        fontWeight: 'bold'
     },
     view: {
         marginBottom: 100

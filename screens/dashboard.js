@@ -16,6 +16,8 @@ const Dashboard = props => {
     const[setisoffline, isoffline] = useState()
     const[driversname, setdriversname] = useState('')
     const[ecocen, setecocen] = useState('')
+    const[size, setsize] = useState('')
+    const[pno, setpno] = useState('')
     
     const [isfetching, setisfetching] = useState(null)
     const [locationpicked, setlocationpicked] = useState()
@@ -70,9 +72,14 @@ const Dashboard = props => {
         locationHandler()
     async function setdriver() {    
         const driver = await AsyncStorage.getItem('username');
-        const ecocen = await AsyncStorage.getItem('ecocen');  
+        const ecocen = await AsyncStorage.getItem('ecocen');
+        
+        const size = await AsyncStorage.getItem('size');
+        const pno = await AsyncStorage.getItem('pno');  
         setdriversname(driver)
         setecocen(ecocen)
+        setsize(size)
+        setpno(pno)
     }
 
         setdriver();
@@ -126,7 +133,7 @@ const Dashboard = props => {
 
     const setonline = () => {
         setisonline(true)
-        axios.patch('/drivers/'+ driversname +'/.json', {ecocentre: ecocen, location: locationpicked, name: driversname ,status: 'Online'})
+        axios.patch('/drivers/'+ driversname +'/.json', {ecocentre: ecocen, location: locationpicked, name: driversname ,status: 'Online', maxsize: size, plateno: pno})
         .then(response => {
             
             console.log(response)
@@ -212,7 +219,7 @@ const Dashboard = props => {
             <Button color="#7bf037" >previous trips</Button>
             </View> */}
 
-<Text>{driversname}</Text>
+{/* <Text>{driversname}</Text> */}
             <View style={styles.btn}>
             {/* <Button mode="contained"  color="#7bf037" onPress={newbookingHandler}>new bookings</Button> */}
             {/* {onlinebtn} */}

@@ -63,6 +63,8 @@ export default function RegisterScreen({ navigation }) {
           try {
             await AsyncStorage.setItem('username', values.first_name)
             await AsyncStorage.setItem('ecocen', values.nearest_eco_center)
+            await AsyncStorage.setItem('size', values.maximam_weight_can_carry)
+            await AsyncStorage.setItem('pno', values.vehicle_plate_no)
           
           } catch (e) {
             console.log(e)
