@@ -15,7 +15,7 @@ import * as firebase from 'firebase';
 import AuthIntroScreen from './screens/AuthIntroScreen';
 import { firebaseConfig } from './config';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-
+import i18n from 'i18n-js';
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 
@@ -23,6 +23,8 @@ const HomeStack = createStackNavigator();
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
+
+
 
 
 
