@@ -157,22 +157,35 @@ const Dashboard = props => {
          */
     }
 
-    /*     const setoffline = () => {
+    const setoffline = () => {
+        setisonline(false)
+        axios.patch('/drivers/'+ driversname +'/.json', {ecocentre: ecocen, location: locationpicked, name: driversname ,status: 'Offline', maxsize: size, plateno: pno})
+        .then(response => {
+            
+            console.log(response)
+        }).catch(err => {
+            console.log(err)
+        })/* ,
+        () => setisonline(true)
+         */
+    }
+
+        /* const setoffline = () => {
             axios.post('/drivers.json', {name: 'gaethje', status: 'Offline'})
             .then(response => {
                 console.log(response)
             }).catch(err => {
                 console.log(err)
             })
-        }
-     */
+        } */
+    
     const isonlineshow = () => {
         setisonline(true)
     }
 
-    const setoffline = () => {
+    /* const setoffline = () => {
         setisonline(false)
-    }
+    } */
 
     let vectors;
 
