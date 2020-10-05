@@ -208,7 +208,7 @@ export default function RegisterScreen({ navigation }) {
               />
               <Text style={styles.errorMsg}>{touched.vehicle_plate_no && errors.vehicle_plate_no}</Text>
               {/* <Button style={styles.btn} onPress={handleSubmit} title="Submit" /> */}
-              <Button style={styles.btn} mode="contained" onPress={handleSubmit}>
+              <Button style={styles.btn} mode="contained" color="#6b8e23" onPress={handleSubmit}>
                 <Text style={{ color: "white" }}>Sign Up</Text>
               </Button>
             </View>
@@ -241,12 +241,15 @@ const styles = StyleSheet.create({
     marginTop: 45,
     fontSize: 25,
     fontWeight: 'bold',
-    color: '#4fc116',
+    // color: '#4fc116',
+    color: 'white',
     marginHorizontal: 15,
   },
   errorMsg: {
     color: 'red',
     marginHorizontal: 15,
+  },
+  scrollView: {
+    backgroundColor: '#88b18b',
   }
-
 });

@@ -5,19 +5,19 @@ import { Button } from 'react-native-paper';
 export default function AuthIntroScreen({ navigation }) {
 
     return (
-        <ScrollView>
+        <ScrollView style={{backgroundColor: '#88b18b'}}>
             <View style={styles.imgContainer}>
                 <Image style={styles.img} resizeMode='cover' source={require('../assets/img/farmer2.png')} />
             </View>
             <View style={styles.container}>
 
                 <Text style={styles.txt}>KrushiGanudenu.lk</Text>
-                <Text style={styles.txtDescription}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at felis nec tellus lacinia hendrerit. </Text>
+                <Text style={styles.txtDescription}>Please Sign Up or Log In to continue to the driver's dashboard</Text>
                 <View style={styles.btnContainer}>
-                    <Button style={styles.btnSignUp} mode="outlined" onPress={() => navigation.navigate('Register')}>
-                        Sign Up
+                    <Button style={styles.btnSignUp} mode="contained" color="#6b8e23"  onPress={() => navigation.navigate('Register')}>
+                    <Text style={{ color: "white" }}>Sign Up</Text>
                 </Button>
-                    <Button style={styles.btnLogin} mode="contained" onPress={() => navigation.navigate('Login')}>
+                    <Button style={styles.btnLogin} mode="contained" color="#6b8e23" onPress={() => navigation.navigate('Login')}>
                         <Text style={{ color: "white" }}>Login</Text>
                     </Button>
                 </View>
@@ -33,7 +33,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#88b18b',
+        height: 300
     },
     btnContainer: {
         flexDirection: 'row',
@@ -41,9 +43,10 @@ const styles = StyleSheet.create({
     },
     btnSignUp: {
         borderRadius: 30,
-        borderColor: '#4fc116',
+        // borderColor: '#4fc116',
         marginHorizontal: 15,
-        paddingHorizontal: 25
+        paddingHorizontal: 25,
+        // color: 'white'
     },
     btnLogin: {
         borderRadius: 30,
@@ -54,12 +57,14 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontSize: 25,
         fontWeight: 'bold',
-        color: '#4fc116',
+        // color: '#4fc116',
+        color: 'white'
     },
     txtDescription: {
         marginBottom: 20,
         color: '#737373',
-        textAlign: 'center'
+        textAlign: 'center',
+        padding: 10
     },
     imgContainer: {
         justifyContent: "center",

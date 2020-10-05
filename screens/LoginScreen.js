@@ -114,7 +114,7 @@ export default function LoginScreen({ navigation }) {
     return (
         <View style={styles.container}>
 
-            <View >
+            <View style={{marginHorizontal: 10}}>
                 <Text style={styles.txtLogin}>Login</Text>
                 <Text style={styles.txtLoginHint}>Login with Email and Password</Text>
                 <Formik
@@ -144,7 +144,7 @@ export default function LoginScreen({ navigation }) {
                             />
                             <Text style={styles.errorMsg}>{touched.password && errors.password}</Text>
 
-                            <Button style={styles.btnSignIn} mode="contained" onPress={handleSubmit}>
+                            <Button style={styles.btnSignIn} mode="contained" color="#6b8e23" onPress={handleSubmit}>
                                 <Text style={{ color: "white" }}>Sign In</Text>
                             </Button>
                         </View>
@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
     txtLogin: {
         fontSize: 25,
         fontWeight: 'bold',
-        color: '#4fc116'
+        // color: '#4fc116'
+        color: 'white'
     },
     txtLoginHint: {
         color: '#737373',
@@ -188,7 +189,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
-        marginHorizontal: 15
+        // marginHorizontal: 15,
+        backgroundColor: '#88b18b',
     },
     errorMsg: {
         color: 'red'
